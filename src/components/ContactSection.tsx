@@ -206,7 +206,7 @@ export const ContactSection: React.FC = () => {
                   },
                   {
                     icon: <Linkedin className="w-5 h-5" />,
-                    url: 'www.linkedin.com/in/abdulbari-dev',
+                    url: 'https://www.linkedin.com/in/abdulbari-dev/',
                     name: 'LinkedIn',
                   },
                   {
