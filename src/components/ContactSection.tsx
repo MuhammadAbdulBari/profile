@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, MapPin, Send, Github, Linkedin, Twitter, CheckCircle2, User, FileText } from 'lucide-react';
+import { Mail, MapPin, Send, Github, Linkedin, CheckCircle2, User, FileText } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import emailjs from '@emailjs/browser';
@@ -201,18 +201,13 @@ export const ContactSection: React.FC = () => {
                 {[
                   {
                     icon: <Github className="w-5 h-5" />,
-                    url: 'https://github.com',
+                    url: 'https://github.com/MuhammadAbdulBari',
                     name: 'GitHub',
                   },
                   {
                     icon: <Linkedin className="w-5 h-5" />,
-                    url: 'https://linkedin.com',
+                    url: 'www.linkedin.com/in/abdulbari-dev',
                     name: 'LinkedIn',
-                  },
-                  {
-                    icon: <Twitter className="w-5 h-5" />,
-                    url: 'https://twitter.com',
-                    name: 'Twitter',
                   },
                   {
                     icon: <Mail className="w-5 h-5" />,
