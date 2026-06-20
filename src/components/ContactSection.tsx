@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, MapPin, Send, Github, Linkedin, Twitter, CheckCircle2, User, FileText } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import emailjs from '@emailjs/browser';
 import { Magnet } from './Magnet';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -69,9 +70,18 @@ export const ContactSection: React.FC = () => {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    // Simulate API request
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1800));
+      await emailjs.send(
+        'service_sq6ca6l',
+        'template_ktk37n5',
+        {
+          from_name: form.name,
+          from_email: form.email,
+          subject: form.subject,
+          message: form.message,
+        },
+        'rytm5JPPKzhe9gIA-'
+      );
       setSubmitStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
