@@ -1,16 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ContactButton } from './ContactButton';
 import { Magnet } from './Magnet';
 
 export const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleScroll = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    setMenuOpen(false);
   };
 
   useEffect(() => {
@@ -49,6 +51,20 @@ export const HeroSection: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  const navItems = ['About', 'Experience', 'Skills', 'Projects', 'Contact'];
+  const getTargetId = (item: string) =>
+    item === 'About' ? 'about' :
+      item === 'Experience' ? 'experience' :
+        item === 'Skills' ? 'services' :
+          item === 'Projects' ? 'projects' : 'contact';
+
   return (
     <section
       ref={containerRef}
@@ -57,25 +73,53 @@ export const HeroSection: React.FC = () => {
       {/* 1. Navbar */}
       <nav className="hero-nav w-full z-20 px-6 md:px-10 pt-6 md:pt-8" style={{ opacity: 0 }}>
         <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
-          {['About', 'Experience', 'Skills', 'Projects', 'Contact'].map((item) => {
-            const targetId =
-              item === 'About' ? 'about' :
-                item === 'Experience' ? 'experience' :
-                  item === 'Skills' ? 'services' :
-                    item === 'Projects' ? 'projects' : 'contact';
-
-            return (
+          {/* Desktop nav links */}
+          <div className="hidden md:flex w-full justify-between items-center">
+            {navItems.map((item) => (
               <button
                 key={item}
-                onClick={() => handleScroll(targetId)}
+                onClick={() => handleScroll(getTargetId(item))}
                 className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem] hover:opacity-70 transition-opacity duration-200 focus:outline-none"
               >
                 {item}
               </button>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Mobile hamburger toggle */}
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            className="md:hidden flex flex-col justify-center items-center gap-1.5 w-9 h-9 ml-auto z-30 focus:outline-none"
+          >
+            <span
+              className={`block w-6 h-[2px] bg-[#D7E2EA] transition-transform duration-300 ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`}
+            />
+            <span
+              className={`block w-6 h-[2px] bg-[#D7E2EA] transition-opacity duration-300 ${menuOpen ? 'opacity-0' : 'opacity-100'}`}
+            />
+            <span
+              className={`block w-6 h-[2px] bg-[#D7E2EA] transition-transform duration-300 ${menuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`}
+            />
+          </button>
         </div>
       </nav>
+
+      {/* Mobile nav overlay menu */}
+      <div
+        className={`md:hidden fixed inset-0 z-20 bg-[#0C0C0C] flex flex-col items-center justify-center gap-8 transition-opacity duration-300 ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        {navItems.map((item) => (
+          <button
+            key={item}
+            onClick={() => handleScroll(getTargetId(item))}
+            className="text-[#D7E2EA] font-medium uppercase tracking-wider text-2xl hover:opacity-70 transition-opacity duration-200 focus:outline-none"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
 
       {/* 2. Hero Heading */}
       <div className="hero-title w-full flex justify-center mt-6 sm:mt-4 md:-mt-5 z-20 px-4" style={{ opacity: 0 }}>
